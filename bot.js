@@ -506,7 +506,7 @@ client.on("guildMemberAdd", member => {
                             });
                         
                             
-                            lient.on('message', msg => {
+                            client.on('message', msg => {
                                 if(msg.content.startsWith('$invitebot')) {
                                 if(msg.channel.type === 'dm') return;
                             const user = msg.mentions.users.first();
