@@ -3717,7 +3717,7 @@ client.on('message', message => {
  
     let room = message.content.split(" ").slice(1);
     let findroom = message.guild.channels.find('name', `${room}`)
-    if(message.content.startsWith(prefix + "setwelcome")) {
+    if(message.content.startsWith(prefix + "setwelcomer")) {
         if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
         if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
 if(!room) return message.channel.send('Please Type The Channel Name')
@@ -3747,7 +3747,7 @@ client.on('message', message => {
           onoff: 'Off'
         }
           if(welcome[message.guild.id].onff === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].onoff = 'On']
-          if(welcome[message.guild.id].onoff === 'On') return [message.channel.send(`**The Welcome Is __ON__ !**`), welcome[message.guild.id].onoff = 'Off']
+          if(welcome[message.guild.id].onoff === 'On') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'Off']
           fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
             if (err) console.error(err)
             .catch(err => {
@@ -3758,7 +3758,25 @@ client.on('message', message => {
          
         })
  
-       
+        client.on('message', message => {
+ 
+            if(message.content.startsWith(prefix + "toggleinvitedby")) {
+                if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+                if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+                if(!welcome[message.guild.id]) welcome[message.guild.id] = {
+                  by: 'Off'
+                }
+                  if(welcome[message.guild.id].by === 'Off') return [message.channel.send(`**The Invited By Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].by = 'On']
+                  if(welcome[message.guild.id].by === 'On') return [message.channel.send(`**The Invited By Is __𝐎𝐍__ !**`), welcome[message.guild.id].by = 'Off']
+                  fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
+                    if (err) console.error(err)
+                    .catch(err => {
+                      console.error(err); 
+                  });
+                    })
+                  }
+                 
+                })
                
  
 client.on('guildMemberAdd',async member => {
@@ -3821,7 +3839,33 @@ client.on('guildMemberAdd',async member => {
   });
   });
   });
-
+ 
+  const invites = {};
+ 
+const wait = require('util').promisify(setTimeout);
+ 
+client.on('ready', () => {
+  wait(1000);
+ 
+  client.guilds.forEach(g => {
+    g.fetchInvites().then(guildInvites => {
+      invites[g.id] = guildInvites;
+    });
+  });
+});
+ 
+client.on('guildMemberAdd', member => {
+    if(welcome[member.guild.id].invitedby === 'Off') return;
+  member.guild.fetchInvites().then(guildInvites => {
+    const ei = invites[member.guild.id];
+    invites[member.guild.id] = guildInvites;
+    const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
+    const inviter = client.users.get(invite.inviter.id);
+    const logChannel = member.guild.channels.find(channel => channel.name === `${welcome[member.guild.id].channel}`);
+    if(!logChannel) return;
+    logChannel.send(`تم الدعوة بواسطة : <@${inviter.id}>`);
+  });
+});
 
 
 
