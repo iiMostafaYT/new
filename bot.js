@@ -42,7 +42,7 @@ client.on('ready', () => {
 client.on("message", message => {
 var prefix = "$";
 if (message.content === "$help") {
-message.channel.send('');
+message.channel.send('**تم الارسال علي الخاص**');
 const embed = new Discord.RichEmbed() 
 .setColor("RANDOM")
 .setDescription(`
