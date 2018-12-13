@@ -32,10 +32,7 @@ const moment = require('moment');
 
 const client = new Discord.Client({disableEveryone: true});
 
-
 const request = require('request');
-
-const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4";
 
 const prefix = '$'
 
