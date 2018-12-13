@@ -39,7 +39,59 @@ client.on('ready', () => {
 	client.user.setGame(`$help | $inv`,'https://www.twitch.tv/v5bz');
 });
 
+client.on("message", message => {
+var prefix = "$";
+if (message.content === "$help") {
+message.channel.send('');
+const embed = new Discord.RichEmbed() 
+.setColor("RANDOM")
+.setDescription(`
+وصف عن البوت
+:gem: البوت فيه كثير ميزات حلوة و جميلة
+                                      
+:rocket: البوت يعمل 24 ساعه
+                                      
+:up: خدمة سبورت 24/7
+                                      
+:free: البوت مجاني %100
 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+__**General Commands**__
+**『$server / يعرض لك معلومات عن السيرفر』
+『$bot / يعرض لك كل معلومات البوت』
+『$fm / عرض لك عدد كل حالات الاشخاص وعدد البوتات وعدد الاشخاص』
+『$id /  معلومات عنك』
+『$allbots /  لعرض جميع البوتات الي بالسيرفر』
+『$savatar / صورة السيرفر』
+『$avatar / صورتك او صورة الي تمنشنة』
+『$inv / لدعوة البوت الى سيرفرك』
+『$support / سيرفر الدعم』
+『$contact / ارسال اقتراح او لمراسلة صاحب البوت』**
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+ __**Administrative Commands**__
+**『$move @user / لسحب الشخص الى روومك』
+『$bc / رسالة جماعية الى كل اعضاء السيرفر』
+『$hchannel / اخفاء الشات』
+『$schannel / اضهار الشات المخفية』
+『$clear / مسح الشات』
+『$mute @user <reason> / اعطاء العضو ميوت لازم رتبة <Muted>』
+『$unmute @user / لفك الميوت عن الشخص 』
+『$kick @user <reason> / طرد الشخص من السيرفر』
+『$ban @user <reason> / حضر الشخص من السيرفر』
+『$mutechannel / تقفيل الشات』
+『$unmutechannel / فتح الشات』
+『$ct <name> / انشاء شات』
+『$cv <name> / انشاء رووم فويس』**
+
+`)
+message.author.sendEmbed(embed)
+                                    
+}
+}); 
+      
 
 client.on("guildMemberAdd", member => {
     member.createDM().then(function (channel) {
