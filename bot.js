@@ -4176,8 +4176,8 @@ if (message.author.bot) return;
         if(!log[message.guild.id]) log[message.guild.id] = {
           onoff: 'Off'
         }
-          if(log[message.guild.id].onoff === 'Off') return [message.channel.send(`**The log Is __𝐎𝐅𝐅__ !**`), log[message.guild.id].onoff = 'On']
-          if(log[message.guild.id].onoff === 'On') return [message.channel.send(`**The log Is __𝐎𝐍__ !**`), log[message.guild.id].onoff = 'Off']
+          if(log[message.guild.id].onoff === 'Off') return [message.channel.send(`**The log Is __𝐎𝐍__ !**`), log[message.guild.id].onoff = 'On']
+          if(log[message.guild.id].onoff === 'On') return [message.channel.send(`**The log Is __𝐎𝐅𝐅__ !**`), log[message.guild.id].onoff = 'Off']
           fs.writeFile("./log.json", JSON.stringify(log), (err) => {
             if (err) console.error(err)
             .catch(err => {
