@@ -2599,7 +2599,7 @@ client.on('guildDelete', guild => {
            client.channels.get("520330714953023518").send({embed});
  }
  
-
+);
 
 client.on('message', message => {
      var prefix = "."
