@@ -220,7 +220,7 @@ client.on('message', function(message) {
 
                         .setColor("#36393e")
 
-                        .setFooter('|| ' + message.author.tag)
+                        .setFooter('' + message.author.tag)
 
                         .setImage(videoInfo.thumbnailUrl)
 
@@ -958,43 +958,6 @@ collector7.on('collect', r => {
 }
 });
 
-client.on('message', async message => {
-    var moment = require('moment');
-    var mmss = require('ms')
-    let date = moment().format('Do MMMM YYYY , hh:mm');
-    let User = message.mentions.users.first();
-    let Reason = message.content.split(" ").slice(3).join(" ");
-    let messageArray = message.content.split(" ");
-    let time = messageArray[2];
-    if(message.content.startsWith(prefix + "ban")) {
-      if (!message.channel.guild) return;
-       if(!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) return message.channel.send("**ماعندك برمشن :X:**");
-       if(!User) message.channel.send("**منشن شخص");
-       if(User.id === client.user.id) return message.channel.send("** :X: ماتقدر تبند البوت**");
-       if(User.id === message.guild.owner.id) return message.channel.send("** :X:لااستطيع تبنيد الاونر **");
-       if(!time) return message.channel.send("**- اكتب الوقت**");
-       if(!time.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send('** :X: البوت لايدعم هذا الوقت**');
-      if(!Reason) Reason = "Null";
-       let banEmbed = new Discord.RichEmbed()
-       .setAuthor(`New Banned User !`)
-       .setThumbnail(message.guild.iconURL || message.guild.avatarURL)
-       .addField('- Banned By: ',message.author.tag,true)
-       .addField('- Banned User:', `${User}`)
-       .addField('- Reason:',Reason,true)
-       .addField('- Time & Date:', `${message.createdAt}`)
-       .addField('- Duration:',time,true)
-       .setFooter(message.author.tag,message.author.avatarURL);
-       let incidentchannel = message.guild.channels.find(`name`, "incidents");
-  if(!incidentchannel) return message.channel.send("Can't find incidents channel.");
-  incidentchannel.send(banEmbed);
-  message.channel.send(`**:white_check_mark: ${User} has been banned :airplane: **`).then(() => message.guild.member(User).ban({reason: Reason}))
-  User.send(`**:airplane: You are has been banned in ${message.guild.name} reason: ${Reason} by: ${message.author.tag} :airplane:**`)
-       .then(() => { setTimeout(() => {
-           message.guild.unban(User);
-       }, mmss(time));
-    });
-   }
-  });
 
    
      
@@ -2645,7 +2608,189 @@ if (message.content.startsWith(prefix + "uptime")) {
 }
 });
 
+client.on('message', message => {
 
+var ms = require('ms')
+
+var moment = require('moment');
+
+var prefix = "."
+
+if (message.author.x5bz) return;
+
+if (!message.content.startsWith(prefix)) return;
+
+let command = message.content.split(" ")[0];
+
+command = command.slice(prefix.length);
+
+let args = message.content.split(" ").slice(1);
+
+let messageArray = message.content.split(" ");
+
+let embed = new Discord.RichEmbed()
+
+
+if (command == "ban") {
+
+if(!message.channel.guild) return message.reply('** This command only for servers**');
+
+if(!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) return message.reply("**:x: You Don't Have ` BAN_MEMBERS ` Permission**");
+
+if(!message.guild.member(client.user).hasPermission("BAN_MEMBERS")) return message.reply("**:x: I Don't Have ` BAN_MEMBERS ` Permission**");
+
+let user = message.mentions.users.first();
+
+let Reason = message.content.split(" ").slice(3).join(" ");
+
+let time = messageArray[2];
+
+if (message.mentions.users.size < 1) return message.channel.sendEmbed(embed)
+
+if (!message.guild.member(user).bannable) return message.reply("**:x:I Don't Have Permission For Ban This User**");
+
+if(!time.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send(':x: This Time Is Incorrect')
+
+if(!Reason) {
+
+message.guild.member(user).ban({reason: Reason})
+
+}
+
+if(!Reason && time) {
+
+message.guild.member(user).ban(7, user);
+
+} 
+
+if(!time) {
+
+message.guild.member(user).ban(7, user);
+
+}
+
+if(time) {
+
+setTimeout(() => {
+
+message.guild.unban(user);
+
+}, ms(time));
+
+}
+
+if(time && Reason && user) {
+
+message.guild.member(user).ban({reason: Reason})
+
+setTimeout(() => {
+
+message.guild.unban(user);
+
+}, ms(time));
+
+}
+
+message.channel.send(`:white_check_mark: ${user.tag} banned from the server ! :airplane:`)
+
+}
+
+});
+
+//probot banned code with duration + reason //by @! ̓$̵ , ̱̍R̴͠ev͘enge̺̻ء ̀,.ͨ̂ 🚭#0453
+
+client.on('message', message => {
+
+var ms = require('ms')
+
+var moment = require('moment');
+
+var prefix = "."
+
+if (message.author.x5bz) return;
+
+if (!message.content.startsWith(prefix)) return;
+
+let command = message.content.split(" ")[0];
+
+command = command.slice(prefix.length);
+
+let args = message.content.split(" ").slice(1);
+
+let messageArray = message.content.split(" ");
+
+let muteRole = message.guild.roles.find("name", "Muted");
+
+let embed = new Discord.RichEmbed()
+
+
+if (command == "mute") {
+
+if(!muteRole) return message.guild.createRole({ name: "Muted", permissions: [] });
+
+if(!message.channel.guild) return message.reply('** This command only for servers**');
+
+if(!message.guild.member(message.author).hasPermission("MANAGE_ROLES_OR_PERMISSIONS ")) return message.reply("**:x: You Don't Have ` MANAGE_ROLES ` Permission**");
+
+if(!message.guild.member(client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS ")) return message.reply("**:x: I Don't Have ` MANAGE_ROLES ` Permission**");
+
+let user = message.mentions.users.first();
+
+let Reason = message.content.split(" ").slice(4).join(" ");
+
+let time = messageArray[2];
+
+if (message.mentions.users.size < 1) return message.channel.sendEmbed(embed)
+
+if (!message.guild.member(user).bannable) return message.reply("**:x:I Don't Have Permission For Mute This User**");
+
+if(!Reason) {
+
+message.guild.member(user).addRole(muteRole);
+
+}
+
+if(!Reason && time) {
+
+message.guild.member(user).addRole(muteRole);
+
+} 
+
+if(!time) {
+
+message.guild.member(user).addRole(muteRole);
+
+}
+
+if(time) {
+
+if(!time.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send(':x: This Time Is Incorrect')
+
+setTimeout(() => {
+
+message.guild.member(user).removeRole(muteRole);
+
+}, ms(time));
+
+}
+
+if(time && Reason && user) {
+
+message.guild.member(user).addRole(muteRole);
+
+setTimeout(() => {
+
+message.guild.member(user).removeRole(muteRole);
+
+}, ms(time));
+
+}
+
+message.channel.send(`:white_check_mark: ${user} has been muted ! :zipper_mouth:`)
+
+}
+
+});
 
 
 
