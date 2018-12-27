@@ -222,7 +222,7 @@ client.on('message', function(message) {
 
                         .setFooter('|| ' + message.author.tag)
 
-                        .setThumbnail(videoInfo.thumbnailUrl)
+                        .setImage(videoInfo.thumbnailUrl)
 
                     message.channel.sendEmbed(play_info);
 
