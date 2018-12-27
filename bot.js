@@ -997,43 +997,7 @@ client.on('message', async message => {
   });
 
    
-      client.on('message', async message => {
-            let muteReason = message.content.split(" ").slice(3).join(" ");
-            let mutePerson = message.mentions.users.first();
-            let messageArray = message.content.split(" ");
-            let muteRole = message.guild.roles.find("name", "Muted");
-            let time = messageArray[2];
-            if(message.content.startsWith(prefix + "mute")) {
-                if(!message.member.hasPermission('MANAGE_ROLES') return message.channel.send('**ليس معي برمشن** `MUTE_MEMBERS`' );
-                if(!mutePerson) return message.channel.send('**منشن شخص**')
-                if(mutePerson === message.author) return message.channel.send('**ما تقدر تعطي لنفسك ميوت**');
-                if(mutePerson === client.user) return message.channel.send('**ما تقدر تعطيني ميوت**');
-                if(message.guild.member(mutePerson).roles.has(muteRole.id)) return message.channel.send('**هذا الشخص اصلا معه ميوت !**');
-                if(!muteRole) return message.guild.createRole({ name: "Muted", permissions: [] });
-                if(!time) return message.channel.send("**اكتب مدت الباند**");
-                if(!time.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send('**The Bot Not Support This Time**');
-                if(!muteReason) return message.channel.send('**اكتب السبب**')
-                message.guild.member(mutePerson).addRole(muteRole);
-                message.channel.send(`**:white_check_mark: ${mutePerson} has been muted ! :zipper_mouth: **`)
-                message.delete()
-                let muteEmbed = new Discord.RichEmbed()
-                .setTitle(`New Temp Muted User`)
-                .setThumbnail(message.guild.iconURL)
-                .addField('- تم اعطاء ميوت من:',message.author,true)
-                .addField('- الشخص الذي اخذ ميوت:', `${mutePerson}`)
-                .addField('- السبب:',muteReason,true)
-                .addField('- المده:',`${mmss(mmss(time), {long: true})}`)
-                .setFooter(message.author.username,message.author.avatarURL);
-                let incidentchannel = message.guild.channels.find(`name`, `${log[message.guild.id].channel}`);
-                if(!incidentchannel) return message.channel.send("Can't find log channel. To Set The Log Channel Type >setLog and answer the questions");
-                incidentchannel.sendEmbed(muteEmbed)
-                mutePerson.send(`**You Are has been temp muted in ${message.guild.name} reason: ${muteReason}**`)
-                .then(() => { setTimeout(() => {
-                   message.guild.member(mutePerson).removeRole(muteRole);
-               }, mmss(time));
-            });
-            }
-        });
+     
     
     client.on('message', message => {
         var prefix = "."
